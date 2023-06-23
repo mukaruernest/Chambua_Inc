@@ -1,0 +1,14 @@
+chambua_inc:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: 34.89.230.185
+      user: ernemuka4263
+      password: vtpNpj4nTe
+      port: 5432
+      database: d2b_accessment
+      schema: ernemuka4263_staging
+      threads: 4
+
+  

@@ -1,0 +1,18 @@
+version: 2
+
+sources: 
+  - name: chambua_inc
+    description: raw data from the staging area
+    database: d2b_accessment  
+    schema: ernemuka4263_staging  
+    tables:
+      - name: orders
+        description: this is the orders table showing each order that was made.
+        columns:
+          - name: order_id
+            description: the primary key for the orders table
+            tests:
+              - unique
+              - not_nul
+      - name: reviews
+        
