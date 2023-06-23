@@ -13,6 +13,13 @@ sources:
             description: the primary key for the orders table
             tests:
               - unique
-              - not_nul
+              - not_null
       - name: reviews
+      - name: shipment_deliveries
+        columns:
+          - name: shipment_id 
+            tests:
+              - unique
+              - not_null
+     
         
