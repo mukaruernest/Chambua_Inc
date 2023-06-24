@@ -13,7 +13,7 @@ with order_date as (
 ), working_day_bool_logic as (
     select
         *,
-        case when day_of_the_week_num between 1 and 5 then True else False end as work_day
+        case when (day_of_the_week_num between 1 and 5) then True else False end as work_day
     from date_numbers
 )
 select * from working_day_bool_logic
