@@ -4,7 +4,7 @@ with order_date as (
     from {{ref ('stg_orders')}}
 ), date_numbers as(
     select
-        order_date as calender_dt,
+        distinct order_date as calender_dt,
         extract(year from order_date) as year_num,
         extract(month from order_date) as month_of_the_year_num,
         extract(day from order_date) as day_of_the_month_num,
