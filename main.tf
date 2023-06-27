@@ -1,6 +1,6 @@
 provider "aws" {
   
-}
+  }
 provider "postgresql" {
   host= "34.89.230.185",
   port=	5432,

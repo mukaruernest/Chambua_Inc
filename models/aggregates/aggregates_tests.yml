@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: agg_performing_products
+    columns:
+      - name: ingestion_date
+        tests:
+          - ingestion_date
+  - name: agg_shipments
+    columns:
+      - name: ingestion_date
+        tests:
+          - ingestion_date
+  - name: agg_public_holiday
+    columns:
+      - name: ingestion_date
+        tests:
+          - ingestion_date
