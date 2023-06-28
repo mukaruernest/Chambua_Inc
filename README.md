@@ -132,7 +132,7 @@ sources:
               - not_null
 ```
 
-### stg_orders table code
+stg_orders table code
   
 ```SQL
   with orders as (
@@ -149,7 +149,7 @@ sources:
 select * from orders
 ```
 
-### stg_reviews table code
+stg_reviews table code
   
 ```SQL
 with reviews as(
@@ -161,7 +161,7 @@ with reviews as(
 select * from reviews
 ```
 
-### stg_shipment_deliveries table code
+stg_shipment_deliveries table code
   
 ```SQL
 with shipment_deliveries as (
@@ -177,7 +177,7 @@ select * from shipment_deliveries
 
 From the staging tables dim_dates table to extract day, month, and year numbers from order date and also to come up with a formular to check if the day is a work_day.
 
-### stg_shipment_deliveries table code  
+stg_shipment_deliveries table code  
 
 ```SQL
 with order_date as (
