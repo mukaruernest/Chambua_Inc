@@ -265,6 +265,8 @@ Finally, product with the highest reviews , the day it was ordered the most, eit
 
 <details>
   <summary>click to view `best_performing_product` table code</summary>
+
+```sql
 with 
 orders as (
 	select * from {{ref ('stg_orders')}}
@@ -314,8 +316,7 @@ left join dim_dates as d on gmo.order_date = d.calender_dt
 left join agg_shipments ag on ag.ingestion_date = cast(now() as date)
 where gmo.order_ranking = 1
 group by 1,2,3,4,5,7
-	
-
+```	
 
 </details>
 
