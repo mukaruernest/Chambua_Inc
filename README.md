@@ -104,10 +104,7 @@ for table in file_names:
 
 I begin the data transformation process by initiating a dbt project. I create a staging area with `stg_orders`, `stg_reviews`, and `stg_shipment_deliveries` tables by selecting from the source file as shown below. This ensures that the data coming in is clean.
 
-<details>
-  <summary>source file configuration</summary>
-
-  The source file contains `unique` and `not_null` tests for primary keys to avoid inacurrate data. 
+The source file contains `unique` and `not_null` tests for primary keys to avoid inacurrate data. 
   
 ```yml
 version: 2
@@ -135,10 +132,7 @@ sources:
               - not_null
 ```
 
-</details>
-
-<details>
-  <summary>stg_orders table code</summary>
+### stg_orders table code
   
 ```SQL
   with orders as (
@@ -155,10 +149,7 @@ sources:
 select * from orders
 ```
 
-</details>
-
-<details>
-  <summary>stg_reviews table code</summary>
+### stg_reviews table code
   
 ```SQL
 with reviews as(
@@ -170,10 +161,7 @@ with reviews as(
 select * from reviews
 ```
 
-</details>
-
-<details>
-  <summary>stg_shipment_deliveries table code</summary>
+### stg_shipment_deliveries table code
   
 ```SQL
 with shipment_deliveries as (
@@ -187,13 +175,10 @@ with shipment_deliveries as (
 select * from shipment_deliveries
 ```
 
-</details>
-
 From the staging tables dim_dates table to extract day, month, and year numbers from order date and also to come up with a formular to check if the day is a work_day.
 
-<details>
-  <summary>dim_dates table code</summary>
-  
+### stg_shipment_deliveries table code  
+
 ```SQL
 with order_date as (
     select
