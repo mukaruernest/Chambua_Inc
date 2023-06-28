@@ -206,6 +206,9 @@ select * from working_day_bool_logic
 
 One of the insights that the business stakeholder want to see are the total number of orders placed on a public holiday every month for the past year. To do that I implemented the `agg_public_holiday` table.
 
+<details>
+  <summary>click to view agg_public_holiday table code</summary>
+	
 ```sql
 with public_holidays as (
 	select
@@ -237,8 +240,9 @@ select
 from agg_orders a 
 inner join public_holidays d on d.month_of_the_year_num = a.month_of_the_year_num
 ```
-Another insight that is import to the business stakeholder is the number of late shipments and the number undelivered shipments, for this I implemented the `agg_shipments` table
-
+</details>
+Another insight that is import to the business stakeholder is the number of late shipments and the number undelivered shipments, for this I implemented the `agg_shipments` table.
+	
 ```sql
 with orders as (
     select * from {{ref ('stg_orders')}}
