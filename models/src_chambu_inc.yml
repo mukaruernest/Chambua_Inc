@@ -2,7 +2,7 @@ version: 2
 
 sources: 
   - name: chambua_inc
-    description: raw data from the staging area
+    description: raw data from the staging schema
     database: d2b_accessment  
     schema: ernemuka4263_staging  
     tables:
