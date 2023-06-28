@@ -1,6 +1,6 @@
 # Chambua Inc
 
-This is an analytics engineering project that was initiated by a business stakeholder. The stakeholder is interested in getting some insights on the business. As the analytics engineer I have come up with an ETL data pipeline by
+This is an analytics engineering project that was initiated by a business stakeholder. The stakeholder is interested in getting some insights on the business. As the analytics engineer I have come up with an ETL data pipeline by;
 
 - [Extaracting data from aws S3 bucket with python to a postgres staging schema.](https://github.com/mukaruernest/data2bots/blob/main/README.md#extaract-data-from-aws-s3-bucket-with-python-to-a-postgres-staging-schema)
 - [Using dbt(data build tool) transform and test the data.](https://github.com/mukaruernest/data2bots/blob/main/README.md#using-dbtdata-build-tool-transform-and-test-the-data)
