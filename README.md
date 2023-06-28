@@ -110,10 +110,43 @@ for table in file_names:
 
 ## Using dbt(data build tool) transform and test the data.
 
-Once I have the data on the staging schema, I initiate a dbt project and create a staging area for all the three tables by selecting from the source file as shown below.
+I begin the data transformation process by initiating a dbt project. I create a staging area with `stg_orders`, `stg_reviews`, and `stg_shipment_deliveries` tables by selecting from the source file as shown below. This ensures that the data coming in is clean.
 
 <details>
-  <summary>stg_orders code</summary>
+  <summary>source file configuration</summary>
+
+  The source file contains `unique` and `not_null` tests for primary keys to avoid inacurrate data. 
+  
+```yml
+version: 2
+
+sources: 
+  - name: chambua_inc
+    description: raw data from the staging schema
+    database: d2b_accessment  
+    schema: ernemuka4263_staging  
+    tables:
+      - name: orders
+        description: this is the orders table showing each order that was made.
+        columns:
+          - name: order_id
+            description: the primary key for the orders table
+            tests:
+              - unique
+              - not_null
+      - name: reviews
+      - name: shipment_deliveries
+        columns:
+          - name: shipment_id 
+            tests:
+              - unique
+              - not_null
+```
+
+</details>
+
+<details>
+  <summary>stg_orders table code</summary>
   
 ```SQL
   with orders as (
@@ -133,7 +166,7 @@ select * from orders
 </details>
 
 <details>
-  <summary>stg_reviews code</summary>
+  <summary>stg_reviews table code</summary>
   
 ```SQL
 with reviews as(
@@ -148,7 +181,7 @@ select * from reviews
 </details>
 
 <details>
-  <summary>stg_shipment_deliveries code</summary>
+  <summary>stg_shipment_deliveries table code</summary>
   
 ```SQL
 with shipment_deliveries as (
@@ -163,5 +196,32 @@ select * from shipment_deliveries
 ```
 
 </details>
+
+Creating of a dim_dates table to extract day, month, and year numbers from order date and also to come up with a formular to check if the day is a work_day.
+
+<details>
+  <summary>dim_dates table code</summary>
+  
+```SQL
+with order_date as (
+    select
+        order_date
+    from {{ref ('stg_orders')}}
+), date_numbers as(
+    select
+        distinct order_date as calender_dt,
+        extract(year from order_date) as year_num,
+        extract(month from order_date) as month_of_the_year_num,
+        extract(day from order_date) as day_of_the_month_num,
+        extract(isodow from order_date) as day_of_the_week_num
+    from order_date
+), working_day_bool_logic as (
+    select
+        *,
+        case when (day_of_the_week_num between 1 and 5) then True else False end as work_day
+    from date_numbers
+)
+select * from working_day_bool_logic
+```
 
 
