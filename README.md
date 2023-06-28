@@ -261,8 +261,10 @@ select
 from date_difference
 ```
 
-Finally, product with the highest reviews , the day it was ordered the most, either that day was a public holiday , total review points, percentagedistribution of the review points , and percentage distribution of early shipments to late shipments for that particular product.
-```sql
+Finally, product with the highest reviews , the day it was ordered the most, either that day was a public holiday , total review points, percentagedistribution of the review points , and percentage distribution of early shipments to late shipments for that particular product. For this I implemented the `best_performing_product` table
+
+<details>
+  <summary>click to view `best_performing_product` table code</summary>
 with 
 orders as (
 	select * from {{ref ('stg_orders')}}
@@ -312,6 +314,8 @@ left join dim_dates as d on gmo.order_date = d.calender_dt
 left join agg_shipments ag on ag.ingestion_date = cast(now() as date)
 where gmo.order_ranking = 1
 group by 1,2,3,4,5,7
+	
 
-```
+
+</details>
 
