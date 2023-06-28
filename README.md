@@ -8,6 +8,9 @@ This is an analytics engineering project that was initiated by a business stakeh
 - [Export the transformed tables as csv files to aws data lake](https://github.com/mukaruernest/data2bots/blob/main/README.md#export-the-transformed-tables-as-csv-files-to-aws-data-lake)
 - [Creating a visualization to show the insights needed by the business stakeholder.](https://github.com/mukaruernest/data2bots/blob/main/README.md#creating-a-visualization-to-show-the-insights-needed-by-the-business-stakeholder)
 
+![image](https://github.com/mukaruernest/data2bots/assets/10958742/44e3ba2a-1888-4a7f-81a9-5b296fc8a266)
+
+
 ## Extaract data from aws S3 bucket with python to a postgres staging schema.
 
 Below is python the code I used to load the raw data into the staging schema in postgres. The code ensures there is scalability, maintability and reliability
