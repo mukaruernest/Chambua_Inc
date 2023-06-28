@@ -242,6 +242,9 @@ inner join public_holidays d on d.month_of_the_year_num = a.month_of_the_year_nu
 ```
 </details>
 Another insight that is import to the business stakeholder is the number of late shipments and the number undelivered shipments, for this I implemented the `agg_shipments` table.
+
+<details>
+  <summary>click to view agg_shipments table code</summary>	
 	
 ```sql
 with orders as (
@@ -264,7 +267,7 @@ select
 	count (case when (delivery_date is null and shipment_date is null) and (undelivered_date_difference > 15) then true end) as tt_undelivered_shipmnets
 from date_difference
 ```
-
+</details>
 Finally, product with the highest reviews , the day it was ordered the most, either that day was a public holiday , total review points, percentagedistribution of the review points , and percentage distribution of early shipments to late shipments for that particular product. For this I implemented the `best_performing_product` table
 
 <details>
