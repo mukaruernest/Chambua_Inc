@@ -2,7 +2,7 @@
 target/
 dbt_packages/
 logs/
-python/
+!python/
  .config.py
 profiles.yml
 main.tf
