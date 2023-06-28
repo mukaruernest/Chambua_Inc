@@ -1,6 +1,11 @@
 
+analyses/
+macros/
+seeds/
+snapshots/
 target/
 dbt_packages/
 logs/
 profiles.yml
 main.tf
+user.yml
