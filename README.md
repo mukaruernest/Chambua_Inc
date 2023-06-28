@@ -329,3 +329,24 @@ group by 1,2,3,4,5,7
 
 </details>
 
+To maintain data quality for the aggregate tables, ingestion_date test is used to assert that ingestion_date column is equal to the current date. Below is the macros used to create the ingestion_date test that is impkemented on a yml file
+```sql
+{% test ingestion_date(model, column_name) %}
+with validation as (
+    select
+        {{ column_name }} as ingestion_date
+    from {{ model }}
+),
+validation_errors as (
+    select
+        ingestion_date
+    from validation
+    -- if this is true, then ingestion date is not correct
+    where ingestion_date != cast(now() as date)
+)
+select *
+from validation_errors
+{% endtest %}
+```
+
+
