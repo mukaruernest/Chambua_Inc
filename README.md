@@ -10,15 +10,15 @@ distribution of the review points , and percentage distribution of early shipmen
 
 To get the insight I follwed the following steps
 
-1. Extaract data from an aws S3 bucket using python to a postgres staging schema.
+1. Extaract data from aws S3 bucket with python to a postgres staging schema.
 2. Using dbt(data build tool) transform and test the data.
 3. Load the transformed tables to an analytics schema.
 4. Export the transformed tables as csv files to an aws.
 5. Create a visualization to show the insights needed by the business stakeholder.
 
-## Extaract data from an aws S3 bucket using python to a postgres staging schema
+## Extaract data from aws S3 bucket with python to a postgres staging schema.
 
-Below is python the code I used to load the raw data into the staging schema in postgres
+Below is python the code I used to load the raw data into the staging schema in postgres. The code ensures there is scalability, maintability and reliability
 <details>
   <summary>Click here to view python code on drop down</summary>
   
@@ -107,3 +107,61 @@ for table in file_names:
 ```
 
 </details>
+
+## Using dbt(data build tool) transform and test the data.
+
+Once I have the data on the staging schema, I initiate a dbt project and create a staging area for all the three tables by selecting from the source file as shown below.
+
+<details>
+  <summary>stg_orders code</summary>
+  
+```SQL
+  with orders as (
+    select 
+        order_id,
+        customer_id,
+        cast(order_date as date) as order_date,
+        cast(product_id as varchar) as product_id,
+        unit_price,
+        quantity,
+        total_price as amount
+    from {{source ('chambua_inc', 'orders')}}
+)
+select * from orders
+```
+
+</details>
+
+<details>
+  <summary>stg_reviews code</summary>
+  
+```SQL
+with reviews as(
+    select 
+        cast(review as integer),
+        cast(product_id as varchar)
+    from {{source ('chambua_inc', 'reviews')}}
+)
+select * from reviews
+```
+
+</details>
+
+<details>
+  <summary>stg_shipment_deliveries code</summary>
+  
+```SQL
+with shipment_deliveries as (
+    select 
+        shipment_id,
+        order_id,
+        cast(shipment_date as date) as shipment_date,
+        cast(delivery_date as date) as delivery_date
+    from {{source ('chambua_inc', 'shipment_deliveries')}}
+)
+select * from shipment_deliveries
+```
+
+</details>
+
+
