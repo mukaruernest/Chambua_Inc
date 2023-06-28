@@ -425,3 +425,10 @@ tf.apply(skip_plan=True)
 </details>
 
 ## Creating a visualization to show the insights needed by the business stakeholder.
+
+A simple visualization displaying some of the insights.
+
+![image](https://github.com/mukaruernest/data2bots/assets/10958742/6bd6ae5e-f9d0-4f50-bd9d-8d9a006bae17)
+
+
+
