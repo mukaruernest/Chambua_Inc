@@ -418,8 +418,8 @@ resource "aws_s3_bucket_object" "{aggregate}_export" {{
 # Load and apply the Terraform configuration
 # tf.load_config(configuration)
 tf.init()
-tf.plan()
-tf.apply
+tf.init()
+tf.apply(skip_plan=True)
 </details>
 ```
 </details>
