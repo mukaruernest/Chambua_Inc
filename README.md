@@ -4,6 +4,7 @@ This is an analytics engineering project that was initiated by a business stakeh
 
 - Extaracting data from aws S3 bucket with python to a postgres staging schema.
 - Using dbt(data build tool) transform and test the data.
+- Creating aggregate tables.
 - Loading the transformed tables to an analytics schema that can be accessed by stakeholders.
 - Export the transformed tables as csv files to aws data lake
 - Creating a visualization to show the insights needed by the business stakeholder.
@@ -201,4 +202,116 @@ with order_date as (
 select * from working_day_bool_logic
 ```
 
+## Creating Aggregate tables.
+
+One of the insights that the business stakeholder want to see are the total number of orders placed on a public holiday every month for the past year. To do that I implemented the `agg_public_holiday` table.
+
+```sql
+with public_holidays as (
+	select
+		month_of_the_year_num
+	from {{ref ('dim_dates')}}
+	where (day_of_the_week_num between 1 and 5) and (work_day = False)
+),
+agg_orders as (
+    select 
+		extract(month from order_date) as month_of_the_year_num,
+		count(order_id) as total_orders  
+	from {{ref ('stg_orders')}}
+	group by 1
+)
+select  
+	cast(now() as date) as ingestion_date,
+    count(case when a.month_of_the_year_num = 1 then true end) as tt_order_hol_jan,
+    count(case when a.month_of_the_year_num = 2 then True end) as tt_order_hol_feb,
+    count(case when a.month_of_the_year_num = 3 then True end) as tt_order_hol_mar,
+    count(case when a.month_of_the_year_num = 4 then True end) as tt_order_hol_apr,
+    count(case when a.month_of_the_year_num = 5 then True end) as tt_order_hol_may,
+    count(case when a.month_of_the_year_num = 6 then True end) as tt_order_hol_jun,
+    count(case when a.month_of_the_year_num = 7 then True end) as tt_order_hol_jul,
+    count(case when a.month_of_the_year_num = 8 then True end) as tt_order_hol_aug,
+    count(case when a.month_of_the_year_num = 9 then True end) as tt_order_hol_sep,
+    count(case when a.month_of_the_year_num = 10 then True end) as tt_order_hol_oct,
+    count(case when a.month_of_the_year_num = 11 then True end) as tt_order_hol_nov,
+    count(case when a.month_of_the_year_num = 12 then True end) as tt_order_hol_dec
+from agg_orders a 
+inner join public_holidays d on d.month_of_the_year_num = a.month_of_the_year_num
+```
+Another insight that is import to the business stakeholder is the number of late shipments and the number undelivered shipments, for this I implemented the `agg_shipments` table
+
+```sql
+with orders as (
+    select * from {{ref ('stg_orders')}}
+), shipments as (
+    select * from {{ref ('stg_shipments_deliveries')}}
+),
+date_difference as (	
+	select 
+		sd.*,
+		o.order_date,
+		(sd.shipment_date - o.order_date) as late_delivery_date_difference,
+		cast('2022-09-06' as date) -  o.order_date as undelivered_date_difference
+	from shipments sd
+	left join orders as o on o.order_id = sd.order_id
+)
+select 
+	cast(now() as date) as ingestion_date,
+	count (case when (late_delivery_date_difference >= 6) and (delivery_date is null) then true end) as tt_late_shipments,
+	count (case when (delivery_date is null and shipment_date is null) and (undelivered_date_difference > 15) then true end) as tt_undelivered_shipmnets
+from date_difference
+```
+
+Finally, product with the highest reviews , the day it was ordered the most, either that day was a public holiday , total review points, percentagedistribution of the review points , and percentage distribution of early shipments to late shipments for that particular product.
+```sql
+with 
+orders as (
+	select * from {{ref ('stg_orders')}}
+),
+reviews as (
+	select * from {{ref ('stg_reviews')}}
+),
+dim_dates as (
+	select * from {{ref ('dim_dates')}} 
+),
+agg_shipments as (
+	select * from {{ref ('agg_shipments')}}
+)
+,total_reviews as(
+	select 
+		product_id, 
+		sum(review) as total_reviews, 
+		rank() over(order by sum(review) desc ) as ranking
+	from reviews
+	group by 1	 
+	
+)
+,get_most_ordered_date as (
+	select
+		tr.product_id,
+		o.order_date,
+		total_reviews as total_review_points,
+		count(o.order_id) as number_of_orders,
+		rank() over(order by count(o.order_id) desc) as order_ranking
+	from total_reviews tr
+	left join orders o on o.product_id = tr.product_id
+	where tr.ranking = 1
+	group by 1,2,3
+	order by 5
+)
+-- select sum(review) from reviews
+select
+	cast(now() as date) as ingestion_date,
+	gmo.product_id,
+	gmo.order_date,
+	case when (day_of_the_week_num between 1 and 5) and (work_day = False) then True else false end as is_public_holiday,
+	gmo.total_review_points,
+	(gmo.total_review_points/(select sum(review) from reviews)) * 100 as pct_dist_review_points,
+	(ag.tt_late_shipments/ag.tt_undelivered_shipmnets) * 100 as pct_dist_early_to_late_shipments
+from get_most_ordered_date as gmo
+left join dim_dates as d on gmo.order_date = d.calender_dt
+left join agg_shipments ag on ag.ingestion_date = cast(now() as date)
+where gmo.order_ranking = 1
+group by 1,2,3,4,5,7
+
+```
 
