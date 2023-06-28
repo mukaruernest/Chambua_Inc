@@ -178,7 +178,7 @@ select * from shipment_deliveries
 
 From the staging tables dim_dates table to extract day, month, and year numbers from order date and also to come up with a formular to check if the day is a work_day.
 
-stg_shipment_deliveries table code  
+dim_dates table code  
 
 ```SQL
 with order_date as (
