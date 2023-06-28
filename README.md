@@ -264,7 +264,7 @@ from date_difference
 Finally, product with the highest reviews , the day it was ordered the most, either that day was a public holiday , total review points, percentagedistribution of the review points , and percentage distribution of early shipments to late shipments for that particular product. For this I implemented the `best_performing_product` table
 
 <details>
-  <summary>click to view `best_performing_product` table code</summary>
+  <summary>click to view best_performing_product table code</summary>
 
 ```sql
 with 
