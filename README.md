@@ -4,7 +4,7 @@ This is an analytics engineering project that was initiated by a business stakeh
 
 - [Extaracting data from aws S3 bucket with python to a postgres staging schema.](https://github.com/mukaruernest/data2bots/blob/main/README.md#extaract-data-from-aws-s3-bucket-with-python-to-a-postgres-staging-schema)
 - [Using dbt(data build tool) transform and test the data.](https://github.com/mukaruernest/data2bots/blob/main/README.md#using-dbtdata-build-tool-transform-and-test-the-data)
-- [Creating aggregate tables.](https://github.com/mukaruernest/data2bots/blob/main/README.md#creating-aggregate-tables)
+- [Creating aggregate tables to generate insights.](https://github.com/mukaruernest/data2bots/blob/main/README.md#creating-aggregate-tables-and-generating-insights)
 - [Export the transformed tables as csv files to aws data lake](https://github.com/mukaruernest/data2bots/blob/main/README.md#export-the-transformed-tables-as-csv-files-to-aws-data-lake)
 - [Creating a visualization to show the insights needed by the business stakeholder.](https://github.com/mukaruernest/data2bots/blob/main/README.md#creating-a-visualization-to-show-the-insights-needed-by-the-business-stakeholder)
 
