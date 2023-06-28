@@ -422,5 +422,6 @@ tf.plan()
 tf.apply
 </details>
 ```
+</details>
 
 ## Creating a visualization to show the insights needed by the business stakeholder.
