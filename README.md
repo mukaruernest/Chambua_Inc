@@ -132,7 +132,7 @@ sources:
               - not_null
 ```
 
-stg_orders table code
+`stg_orders` table code
   
 ```SQL
   with orders as (
@@ -149,7 +149,7 @@ stg_orders table code
 select * from orders
 ```
 
-stg_reviews table code
+`stg_reviews` table code
   
 ```SQL
 with reviews as(
@@ -161,7 +161,7 @@ with reviews as(
 select * from reviews
 ```
 
-stg_shipment_deliveries table code
+`stg_shipment_deliveries` table code
   
 ```SQL
 with shipment_deliveries as (
@@ -177,7 +177,7 @@ select * from shipment_deliveries
 
 From the staging tables dim_dates table to extract day, month, and year numbers from order date and also to come up with a formular to check if the day is a work_day.
 
-dim_dates table code  
+`dim_dates` table code  
 
 ```SQL
 with order_date as (
@@ -201,7 +201,7 @@ with order_date as (
 select * from working_day_bool_logic
 ```
 
-## Creating Aggregate tables.
+## Creating Aggregate tables and generating insights.
 
 One of the insights that the business stakeholder want to see are the total number of orders placed on a public holiday every month for the past year. To do that I implemented the `agg_public_holiday` table.
 
@@ -353,6 +353,7 @@ To load the aggregate tables to an analytics schema I ran `dbt build -target pro
 ## Export the transformed tables as csv files to aws data lake.
 
 This is done using terraform and python. Using python enures that there is scalability, maintability and reliability.
+
 <details>
   <summary>click to view python code used to export aggregate tables to the data lake</summary>
 	
@@ -419,7 +420,6 @@ resource "aws_s3_bucket_object" "{aggregate}_export" {{
 tf.init()
 tf.init()
 tf.apply(skip_plan=True)
-</details>
 ```
 </details>
 
