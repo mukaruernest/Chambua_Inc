@@ -254,9 +254,9 @@ group by 1
 
 *agg_public_holiday table*
 
-| "ingestion_date" | "tt_order_hol_jan" | "tt_order_hol_feb" | "tt_order_hol_mar" | "tt_order_hol_apr" | "tt_order_hol_may" | "tt_order_hol_jun" | "tt_order_hol_jul" | "tt_order_hol_aug" | "tt_order_hol_sep" | "tt_order_hol_oct" | "tt_order_hol_nov" | "tt_order_hol_dec" |
+| ingestion_date | tt_order_hol_jan | tt_order_hol_feb | tt_order_hol_mar | tt_order_hol_apr | tt_order_hol_may | tt_order_hol_jun | tt_order_hol_jul | tt_order_hol_aug | tt_order_hol_sep | tt_order_hol_oct | tt_order_hol_nov | tt_order_hol_dec |
 |------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|
-| "2023-06-28"     | 100                | 80                 | 80                 | 85                 | 95                 | 80                 | 95                 | 85                 | 50                 | 50                 | 40                 | 40                 |
+| 2023-06-28     | 100                | 80                 | 80                 | 85                 | 95                 | 80                 | 95                 | 85                 | 50                 | 50                 | 40                 | 40                 |
 
 Another insight that is import to the business stakeholder is the number of late shipments and the number undelivered shipments, for this I implemented the `agg_shipments` table.
 
@@ -322,9 +322,9 @@ from shipment_performance
 </details>
 
 *agg_shipments table*
-| "ingestion_date" | "tt_late_shipments" | "tt_undelivered_shipmnets" |
+| ingestion_date | tt_late_shipments | tt_undelivered_shipmnets |
 |------------------|---------------------|----------------------------|
-| "2023-06-28"     | 175                 | 6586                       |
+| 2023-06-28     | 175                 | 6586                       |
 
 
 Finally, product with the highest reviews , the day it was ordered the most, either that day was a public holiday , total review points, percentagedistribution of the review points , and percentage distribution of early shipments to late shipments for that particular product. For this I implemented the `best_performing_product` table.
@@ -408,9 +408,9 @@ shipments_performance as (
 
 *agg_best_performing product table*
 
-| "ingestion_date" | "product_id" | "order_date" | "is_public_holiday" | "total_reviews" | "pct_dist_ttl_review_points" | "pct_dist_early_to_late_shipments" |
+| ingestion_date | product_id | order_date | is_public_holiday | total_reviews | pct_dist_ttl_review_points | pct_dist_early_to_late_shipments |
 |------------------|--------------|--------------|---------------------|-----------------|------------------------------|------------------------------------|
-| "2023-06-29"     | "22"         | "2022-01-06" | false               | 967             | 20                           | 93                                 |
+| 2023-06-29    | 22         | 2022-01-06 | false               | 967             | 20                           | 93                                 |
 
 To maintain data quality for the aggregate tables, ingestion_date test is used to assert that ingestion_date column is equal to the current date. Below is the macros used to create the ingestion_date test that is implemented on a yml file
 ```sql
