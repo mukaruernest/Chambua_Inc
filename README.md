@@ -511,7 +511,8 @@ tf.apply(skip_plan=True)
 
 A simple visualization displaying some of the insights.
 
-![image](https://github.com/mukaruernest/data2bots/assets/10958742/6bd6ae5e-f9d0-4f50-bd9d-8d9a006bae17)
+![image](https://github.com/mukaruernest/data2bots/assets/10958742/db7c911d-7baf-4037-9e62-b1009e07c219)
+
 
 
 
