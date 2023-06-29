@@ -61,8 +61,8 @@ shipments_performance as (
 		order_date,
 		case when (day_of_the_week_num between 1 and 5) and work_day = false then True else False end as is_public_holiday,
 		total_reviews,
-		total_reviews/total_product_reviews * 100 as pct_dist_ttl_review_points,
-		count_early / (count_early + count_late) * 100 as pct_dist_early_to_late_shipments
+		(total_reviews * 100) / (total_reviews + total_product_reviews) as pct_dist_ttl_review_points,
+		(count_early * 100) / (count_early + count_late) as pct_dist_early_to_late_shipments
 	from base_table bs 
 	left join dim_dates as d on d.calender_dt = bs.order_date
  )
