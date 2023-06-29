@@ -408,9 +408,9 @@ shipments_performance as (
 
 **agg_best_performing product table**
 
-| "product_id" | "order_date" | "is_public_holiday" | "total_reviews" | "pct_dist_ttl_review_points" | "pct_dist_early_to_late_shipments" |
-|--------------|--------------|---------------------|-----------------|------------------------------|------------------------------------|
-| "22"         | "2022-01-06" | false               | 967             | 20                           | 93                                 |
+| "ingestion_date" | "product_id" | "order_date" | "is_public_holiday" | "total_reviews" | "pct_dist_ttl_review_points" | "pct_dist_early_to_late_shipments" |
+|------------------|--------------|--------------|---------------------|-----------------|------------------------------|------------------------------------|
+| "2023-06-29"     | "22"         | "2022-01-06" | false               | 967             | 20                           | 93                                 |
 
 To maintain data quality for the aggregate tables, ingestion_date test is used to assert that ingestion_date column is equal to the current date. Below is the macros used to create the ingestion_date test that is impkemented on a yml file
 ```sql
