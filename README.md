@@ -252,7 +252,59 @@ group by 1
 ```
 </details>
 
+**agg_public_holiday table**
+
+| "ingestion_date" | "tt_order_hol_jan" | "tt_order_hol_feb" | "tt_order_hol_mar" | "tt_order_hol_apr" | "tt_order_hol_may" | "tt_order_hol_jun" | "tt_order_hol_jul" | "tt_order_hol_aug" | "tt_order_hol_sep" | "tt_order_hol_oct" | "tt_order_hol_nov" | "tt_order_hol_dec" |
+|------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|
+| "2023-06-28"     | 100                | 80                 | 80                 | 85                 | 95                 | 80                 | 95                 | 85                 | 50                 | 50                 | 40                 | 40                 |
+
 Another insight that is import to the business stakeholder is the number of late shipments and the number undelivered shipments, for this I implemented the `agg_shipments` table.
+
+
+Before implemnting `agg_shipments` I needed to create `stg_shipment_performance` that would be used to determine whether the order was late, early or undelivered by creating a new column. This table would be helpful in other insights as well.
+
+<details>
+  <summary>click to view stg_shipment_performance code</summary>
+
+ ```sql
+with orders as (
+    select * from {{ref ('stg_orders')}}
+), shipments as (
+    select * from {{ref ('stg_shipments_deliveries')}}
+),
+date_difference as (	
+	select 
+		sd.*,
+		o.order_date,
+        product_id,
+		(sd.shipment_date - o.order_date) as late_delivery_date_difference,
+		cast('2022-09-06' as date) -  o.order_date as undelivered_date_difference
+	from shipments sd
+	left join orders o on o.order_id = sd.order_id
+)
+select 
+    order_id,
+    product_id,
+    case 
+        when (late_delivery_date_difference >= 6) and (delivery_date is null) then 'late' 
+        when (late_delivery_date_difference < 6) and (delivery_date is not null) then 'early'
+        when (delivery_date is null and shipment_date is null) and (undelivered_date_difference > 15) then 'undelivered'
+    end as late_early_undelivered
+from date_difference
+
+```
+	
+```sql
+with shipment_performance as (
+	select * from {{ref ('stg_shipment_performance')}}
+)
+select 
+	cast(now() as date) as ingestion_date,
+	count(case when late_early_undelivered = 'late' then True end) as tt_late_shipments,
+	count(case when late_early_undelivered = 'undelivered' then True end) as tt_undelivered_shipmnets
+from shipment_performance
+```
+</details>
 
 <details>
   <summary>click to view agg_shipments table code</summary>	
@@ -268,6 +320,12 @@ select
 from shipment_performance
 ```
 </details>
+
+**agg_shipments table**
+| "ingestion_date" | "tt_late_shipments" | "tt_undelivered_shipmnets" |
+|------------------|---------------------|----------------------------|
+| "2023-06-28"     | 175                 | 6586                       |
+
 
 Finally, product with the highest reviews , the day it was ordered the most, either that day was a public holiday , total review points, percentagedistribution of the review points , and percentage distribution of early shipments to late shipments for that particular product. For this I implemented the `best_performing_product` table.
 
@@ -346,8 +404,13 @@ shipments_performance as (
  select* from is_public_holiday	
 
 ```	
-
 </details>
+
+**agg_best_performing product table**
+
+| "product_id" | "order_date" | "is_public_holiday" | "total_reviews" | "pct_dist_ttl_review_points" | "pct_dist_early_to_late_shipments" |
+|--------------|--------------|---------------------|-----------------|------------------------------|------------------------------------|
+| "22"         | "2022-01-06" | false               | 967             | 20                           | 93                                 |
 
 To maintain data quality for the aggregate tables, ingestion_date test is used to assert that ingestion_date column is equal to the current date. Below is the macros used to create the ingestion_date test that is impkemented on a yml file
 ```sql
