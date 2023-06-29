@@ -206,7 +206,7 @@ select * from working_day_bool_logic
 
 ## Creating Aggregate tables and generating insights.
 
-One of the insights that the business stakeholder want to see are the total number of orders placed on a public holiday every month for the past year. To do that I implemented the `agg_public_holiday` table.
+One of the insights that the business stakeholder wants to see are the total number of orders placed on a public holiday every month for the past year. To do that I implemented the `agg_public_holiday` table.
 
 <details>
   <summary>click to view agg_public_holiday table code</summary>
@@ -252,7 +252,7 @@ group by 1
 ```
 </details>
 
-**agg_public_holiday table**
+*agg_public_holiday table*
 
 | "ingestion_date" | "tt_order_hol_jan" | "tt_order_hol_feb" | "tt_order_hol_mar" | "tt_order_hol_apr" | "tt_order_hol_may" | "tt_order_hol_jun" | "tt_order_hol_jul" | "tt_order_hol_aug" | "tt_order_hol_sep" | "tt_order_hol_oct" | "tt_order_hol_nov" | "tt_order_hol_dec" |
 |------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|--------------------|
@@ -261,7 +261,7 @@ group by 1
 Another insight that is import to the business stakeholder is the number of late shipments and the number undelivered shipments, for this I implemented the `agg_shipments` table.
 
 
-Before implemnting `agg_shipments` I needed to create `stg_shipment_performance` that would be used to determine whether the order was late, early or undelivered by creating a new column. This table would be helpful in other insights as well.
+> Before implemnting `agg_shipments` I needed to create `stg_shipment_performance` as staging table that would be used to determine whether the order was late, early or undelivered by creating a new column. This table would be helpful in other insights as well.
 
 <details>
   <summary>click to view stg_shipment_performance code</summary>
@@ -321,7 +321,7 @@ from shipment_performance
 ```
 </details>
 
-**agg_shipments table**
+*agg_shipments table*
 | "ingestion_date" | "tt_late_shipments" | "tt_undelivered_shipmnets" |
 |------------------|---------------------|----------------------------|
 | "2023-06-28"     | 175                 | 6586                       |
@@ -406,13 +406,13 @@ shipments_performance as (
 ```	
 </details>
 
-**agg_best_performing product table**
+*agg_best_performing product table*
 
 | "ingestion_date" | "product_id" | "order_date" | "is_public_holiday" | "total_reviews" | "pct_dist_ttl_review_points" | "pct_dist_early_to_late_shipments" |
 |------------------|--------------|--------------|---------------------|-----------------|------------------------------|------------------------------------|
 | "2023-06-29"     | "22"         | "2022-01-06" | false               | 967             | 20                           | 93                                 |
 
-To maintain data quality for the aggregate tables, ingestion_date test is used to assert that ingestion_date column is equal to the current date. Below is the macros used to create the ingestion_date test that is impkemented on a yml file
+To maintain data quality for the aggregate tables, ingestion_date test is used to assert that ingestion_date column is equal to the current date. Below is the macros used to create the ingestion_date test that is implemented on a yml file
 ```sql
 {% test ingestion_date(model, column_name) %}
 with validation as (
@@ -432,7 +432,7 @@ from validation_errors
 {% endtest %}
 ```
 
-To load the aggregate tables to an analytics schema I ran `dbt build -target prod` prod is configured on `profiles.yml` to load tables on analytics schema.
+To load the aggregate tables to the analytics schema I ran `dbt build -target prod` prod is configured on `profiles.yml` to load tables on analytics schema.
 
 ## Export the transformed tables as csv files to aws data lake.
 
@@ -509,7 +509,7 @@ tf.apply(skip_plan=True)
 
 ## Creating a visualization to show the insights needed by the business stakeholder.
 
-A simple visualization displaying some of the insights.
+A simple visualization displaying some of the insights is made by connecting Tableau to the analytics schema. This would make the data easy to share and update. 
 
 ![image](https://github.com/mukaruernest/data2bots/assets/10958742/db7c911d-7baf-4037-9e62-b1009e07c219)
 
