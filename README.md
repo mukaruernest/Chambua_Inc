@@ -107,7 +107,7 @@ for table in file_names:
 
 I begin the data transformation process by initiating a dbt project. I create a staging area with `stg_orders`, `stg_reviews`, and `stg_shipment_deliveries` tables by selecting from the source file as shown below. This ensures that the data coming in is clean.
 
-The source file contains `unique` and `not_null` tests for primary keys to avoid inacurrate data. 
+The source file contains `unique` and `not_null` tests for primary keys to maintain data quality.
   
 ```yml
 version: 2
