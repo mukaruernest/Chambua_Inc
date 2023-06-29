@@ -178,7 +178,7 @@ with shipment_deliveries as (
 select * from shipment_deliveries
 ```
 
-From the staging tables dim_dates table to extract day, month, and year numbers from order date and also to come up with a formular to check if the day is a work_day.
+From the staging tables I created a `dim_dates` table to extract day, month, and year numbers from order_date column of `stg_orders` and also to came up with a formular to check if the day is a work_day by creating a `work_day` column.
 
 `dim_dates` table code  
 
