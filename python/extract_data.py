@@ -6,7 +6,7 @@ import os
 
 from botocore import UNSIGNED
 from botocore.client import Config
-from config import host, port, username, password
+from config import host, port, username, password, database
 s3 = boto3.client('s3', config=Config(signature_version=UNSIGNED))
 bucket_name = "d2b-internal-assessment-bucket"
 response = s3.list_objects(Bucket=bucket_name, Prefix="orders_data")
@@ -55,7 +55,7 @@ for table in file_names:
   port=	port,
   user=username,
   password=password,
-  database="d2b_accessment",
+  database=database,
   )
   cursor = connection.cursor()
   schema_name="ernemuka4263_staging"
